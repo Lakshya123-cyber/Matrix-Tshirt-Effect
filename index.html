@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Matrix T-shirt Effect</title>
+
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <canvas id="matrixCanvas"></canvas>
+    <canvas id="camCanvas"></canvas>
+
+    <script>
+      navigator.mediaDevices
+        .getUserMedia({ video: true })
+        .then(function (rowData) {
+          const video = document.createElement("video");
+          video.srcObject = rowData;
+          video.play();
+          video.onloadeddata = function () {
+            const camCanvas = document.getElementById("camCanvas");
+            camCanvas.width = video.videoWidth;
+            camCanvas.height = video.videoHeight;
+
+            const mCanvas = document.getElementById("matrixCanvas");
+            mCanvas.width = video.videoWidth;
+            mCanvas.height = video.videoHeight;
+
+            const ste = new SeeThroughEffect(camCanvas, video, [10, 100, 200]);
+            const m = new MatrixEffect(mCanvas, [10, 100, 200]);
+          };
+        })
+        .catch(function (err) {
+          alert(err);
+        });
+    </script>
+    <script src="see-through.js"></script>
+    <script src="matrix.js"></script>
+    <script src="utils.js"></script>
+  </body>
+</html>
